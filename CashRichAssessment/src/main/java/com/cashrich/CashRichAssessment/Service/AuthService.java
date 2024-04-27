@@ -26,7 +26,6 @@ public class AuthService {
     }
 
     public String authenticate(String username, String password) {
-        // Find user by username
         User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");

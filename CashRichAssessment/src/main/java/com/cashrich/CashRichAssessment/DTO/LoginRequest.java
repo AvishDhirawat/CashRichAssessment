@@ -8,7 +8,6 @@ public class LoginRequest {
 
     }
 
-    // Getters and setters
     public String getUsername() {
         return username;
     }

@@ -1,11 +1,9 @@
 package com.cashrich.CashRichAssessment.DTO;
 
 public class ThirdPartyApiRequest {
-    // Define properties required for the third-party API request
     private String param1;
     private String param2;
 
-    // Getters and setters
     public String getParam1() {
         return param1;
     }

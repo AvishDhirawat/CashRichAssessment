@@ -77,7 +77,6 @@ public class UserService {
         if (optionalUser.isPresent()) {
             return convertToDTO(optionalUser.get());
         } else {
-            // Handle case when user is not found
             throw new CashRichException("User not found with ID: " + userId);
         }
     }
@@ -87,7 +86,6 @@ public class UserService {
         if (optionalUser.isPresent()) {
             return convertToDTO(optionalUser.get());
         } else {
-            // Handle case when user is not found
             throw new CashRichException("User not found with ID: " + username);
         }
     }

@@ -1,11 +1,9 @@
 package com.cashrich.CashRichAssessment.DTO;
 
 public class ApiResponse {
-    // Define properties for the response from the third-party API
     private String message;
     private Object data;
 
-    // Constructors, getters, and setters
     public ApiResponse(String message, Object data) {
         this.message = message;
         this.data = data;

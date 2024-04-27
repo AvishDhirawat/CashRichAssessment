@@ -10,7 +10,6 @@ public class UpdateUserRequest {
 
     }
 
-    // Getters and setters
     public String getFirstName() {
         return firstName;
     }

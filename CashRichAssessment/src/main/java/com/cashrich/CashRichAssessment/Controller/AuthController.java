@@ -31,17 +31,14 @@ public class AuthController {
 
     @GetMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-        // Basic validation
         if (loginRequest.getUsername() == null || loginRequest.getPassword() == null) {
             return ResponseEntity.badRequest().body("Username and password are required");
         }
 
-        // Secure API origin confirmation
 //        if (!request.getHeader("X-Api-Origin").equals("your_predefined_value")) {
 //            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Invalid API origin");
 //        }
 
-        // Authenticate user
         String token = authService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
 
         if (token == null) {
@@ -53,15 +50,12 @@ public class AuthController {
 
     @PutMapping("/users/update")
     public ResponseEntity<?> updateUser(@RequestBody UpdateUserRequest updateUserRequest,@AuthenticationPrincipal Principal principal) {
-        // Ensure user is authenticated
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
         }
 
-        // Extract user ID from authentication token
         Long userId = authService.getUserIdFromToken(principal.getName());
 
-        // Update user data
         userService.updateUser(userId, updateUserRequest);
 
         return ResponseEntity.ok().body("User data updated successfully");
@@ -69,18 +63,14 @@ public class AuthController {
 
     @GetMapping("/third-party-api")
     public ResponseEntity<?> callThirdPartyApi(@RequestBody ThirdPartyApiRequest request, Principal principal) {
-        // Ensure user is authenticated
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not logged in");
         }
 
-        // Extract user ID from authentication token
         Long userId = authService.getUserIdFromToken(principal.getName());
 
-        // Make API call to third-party API
         ApiResponse response = thirdPartyApiService.callApi(request);
 
-        // Store request-response data in database
         thirdPartyApiService.saveRequestResponse(userId, request, response);
 
         return ResponseEntity.ok().body(response);

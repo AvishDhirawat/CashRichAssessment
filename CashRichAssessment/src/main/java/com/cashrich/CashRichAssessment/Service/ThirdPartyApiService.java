@@ -34,33 +34,26 @@ public class ThirdPartyApiService {
 //    }
 
     public ApiResponse callApi(ThirdPartyApiRequest request) {
-        // Construct the URL with the base URL and parameters from the request
         String apiUrl = baseUrl + "?param1=" + request.getParam1() + "&param2=" + request.getParam2();
 
-        // Add API key to request headers
         HttpHeaders headers = new HttpHeaders();
         headers.set("X-CMC_PRO_API_KEY", apiKey);
         HttpEntity<?> httpEntity = new HttpEntity<>(headers);
 
-        // Make the API call
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, httpEntity, String.class);
 
-        // Process the response and return ApiResponse
-        // Here, you would parse the response and create an ApiResponse object
         String responseBody = response.getBody();
         ApiResponse apiResponse = new ApiResponse("Success", responseBody);
         return apiResponse;
     }
 
     public void saveRequestResponse(Long userId, ThirdPartyApiRequest request, ApiResponse response) {
-        // Create a ThirdPartyApiLog object to store request and response data
         ThirdPartyApiLog log = new ThirdPartyApiLog();
         log.setUserId(userId); // Set the user ID
         log.setRequest(request.toString());
         log.setResponse(response.toString());
         log.setTimestamp(LocalDateTime.now());
 
-        // Save the log to the database
         thirdPartyApiLogRepository.save(log);
     }
 
