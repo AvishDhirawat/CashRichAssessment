@@ -1,10 +1,12 @@
 package com.cashrich.CashRichAssessment.Service;
 
+import com.cashrich.CashRichAssessment.DTO.UpdateUserRequest;
 import com.cashrich.CashRichAssessment.DTO.UserDTO;
 import com.cashrich.CashRichAssessment.Entity.User;
 import com.cashrich.CashRichAssessment.Exception.CashRichException;
 import com.cashrich.CashRichAssessment.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +16,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
     public UserDTO createUser(UserDTO userDTO) {
         User user = new User();
@@ -22,8 +26,9 @@ public class UserService {
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
         user.setMobile(userDTO.getMobile());
-        user.setPassword(userDTO.getPassword());
-        if (null != userRepository.findByUsername(userDTO.getUsername())){
+        user.setPassword(encoder.encode(userDTO.getPassword()));
+        user.setRole(userDTO.getRole());
+        if (null != userRepository.findByUsername(userDTO.getUsername()) || null != userRepository.findByEmail(userDTO.getEmail())){
             throw new CashRichException("User Already Exists");
         }
         User savedUser = userRepository.save(user);
@@ -38,6 +43,18 @@ public class UserService {
         existingUser.setLastName(userDTO.getLastName());
         existingUser.setEmail(userDTO.getEmail());
         existingUser.setMobile(userDTO.getMobile());
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return convertToDTO(updatedUser);
+    }
+
+    public UserDTO updateUser(Long userId, UpdateUserRequest updateUserRequest) {
+        User existingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        existingUser.setFirstName(updateUserRequest.getFirstName());
+        existingUser.setLastName(updateUserRequest.getLastName());
+        existingUser.setMobile(updateUserRequest.getMobile());
 
         User updatedUser = userRepository.save(existingUser);
 

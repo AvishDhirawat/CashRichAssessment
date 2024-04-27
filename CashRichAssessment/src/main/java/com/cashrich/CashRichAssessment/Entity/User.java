@@ -15,9 +15,13 @@ public class User {
 
     private String firstName;
     private String lastName;
+
+    @Column(unique = true)
     private String email;
+
     private String mobile;
     private String password;
+    private String role;
 
     public User() {
     }
@@ -78,4 +82,11 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
