@@ -9,11 +9,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @CrossOrigin
@@ -60,6 +63,29 @@ public class UserController {
         ResponseEntity<String> response = restTemplate.exchange(
                 url, HttpMethod.GET, requestEntity, String.class);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
+    @GetMapping("/coindetails")
+    public ResponseEntity<String> getNewCoinDetails(
+            @RequestParam String url,
+            @RequestParam String headerKey,
+            @RequestParam String headerValue) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(headerKey, headerValue);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<String> response = restTemplate.exchange(
+                    url, HttpMethod.GET, requestEntity, String.class);
+            return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
+        } catch (HttpStatusCodeException e) {
+            // Handle HTTP status code exceptions
+            return ResponseEntity.status(e.getStatusCode()).body(e.getResponseBodyAsString());
+        } catch (RestClientException e) {
+            // Handle general RestClientException
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+        }
     }
 }
