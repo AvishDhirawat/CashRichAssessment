@@ -45,16 +45,16 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @GetMapping("/get/{username}")
-    public ResponseEntity<UserDTO> getByUserName(@PathVariable String userName) {
-        UserDTO user = userService.getByUserName(userName);
+    @GetMapping("/get")
+    public ResponseEntity<UserDTO> getByUserName(@RequestParam String username) {
+        UserDTO user = userService.getByUserName(username);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @GetMapping("/api/coindetails")
     public ResponseEntity<?> getCoinDetails() {
         HttpHeaders headers = new HttpHeaders();
-        headers.set("X-CMC_PRO_API_KEY", "27ab17d1-215f-49e5-9ca4-afd48810c149");
+        headers.set("X-CMC_PRO_API_KEY", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzE1NDAzNzM5LCJleHAiOjE3MTU0MDU1Mzl9.ffLIjCOZhhidNiatPiXSClxIJPKQqi4Jpq0IEiJEkhaP408roFRRQMlMfG5_gGkY8BxE4rpP4GK9w6OKmyWYhg");
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         String url = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=BTC,ETHLTC";
         ResponseEntity<String> response = restTemplate.exchange(

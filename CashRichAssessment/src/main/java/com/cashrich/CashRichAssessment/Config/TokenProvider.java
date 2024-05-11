@@ -11,7 +11,7 @@ import java.util.Date;
 @Component
 public class TokenProvider {
 
-    @Value("${app.jwt.secret:check12345check12345gfghghghhggyjgyjgyjgdfththfhfthfthfthfthfhfhfhfthffdgbgh6tuhjyj7u6545yt45y56y6yyh5h6h6565y45y5yh65h55y545y56y45t64y56yh56y6uy5g45y56y6y4}")
+    @Value("${app.jwt.secret:check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345check12345}")
     private String jwtSecret;
 
     @Value("${app.jwt.expiration:1800000}")
